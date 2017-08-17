@@ -28,7 +28,7 @@ SECRET_KEY = ')62(z7ckgrbi4hk1q@mp6#*8io!s$$g4a49m&3$x@(&k=$qpac'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.20.6','127.0.0.1']
 
 
 # Application definition
@@ -43,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'compressor',
-    'widget_tweaks'
-] + get_core_apps(['catalogue','customer'])
+    'widget_tweaks',
+    'customtemplatetags.apps.CustomtemplatetagsConfig'
+] + get_core_apps(['catalogue', 'promotions', 'partner'])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,3 +149,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#Authentication backend
+AUTHENTICATION_BACKENDS = (
+    'oscar.apps.customer.auth_backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
