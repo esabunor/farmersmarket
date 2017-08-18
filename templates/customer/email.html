@@ -8,15 +8,15 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
     <li>
-        <a href="{% url promotions:home %}">{% trans 'Home' %}</a>
+        <a href="{% url 'promotions:home' %}">{% trans 'Home' %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-        <a href="{% url customer:summary %}">{% trans 'Account' %}</a>
+        <a href="{% url 'customer:summary' %}">{% trans 'Account' %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-        <a href="{% url customer:email-list %}">{% trans 'Email history' %}</a>
+        <a href="{% url 'customer:email-list' %}">{% trans 'Email history' %}</a>
         <span class="divider">/</span>
     </li>
 	<li class="active">'{{ email.subject }}'</li>
@@ -59,7 +59,7 @@
     </tr>
 </table>
 
-<div class="form-actions"><a href="{% url customer:email-list %}" class="btn">{% trans 'Return to email history' %}</a></div>
+<div class="form-actions"><a href="{% url 'customer:email-list' %}" class="btn">{% trans 'Return to email history' %}</a></div>
 
 {% endblock content %}
 

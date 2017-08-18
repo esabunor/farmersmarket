@@ -15,7 +15,7 @@
 	<h4>{% trans "Build a new condition" %}</h4>
 	{% include "partials/form_field.html" with field=form.range %}
 	<p>{% trans "Ranges can be created and edited from within the " %}
-		<a href="{% url dashboard:range-list %}">{% trans "range dashboard" %}</a>.</p>
+		<a href="{% url 'dashboard:range-list' %}">{% trans "range dashboard" %}</a>.</p>
 	{% include "partials/form_field.html" with field=form.type %}
 	{% include "partials/form_field.html" with field=form.value %}
 

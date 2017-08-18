@@ -8,11 +8,11 @@ create-page
 {% block breadcrumbs %}
 <ul class="breadcrumb">        	
     <li>        	
-        <a href="{% url dashboard:index %}">{% trans "Dashboard" %}</a>    	  	
+        <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>    	  	
         <span class="divider">/</span>    	  	
     </li>    	  	
     <li>    	  	
-        <a href="{% url dashboard:promotion-list %}">{% trans "Content block management" %}</a>    	  	
+        <a href="{% url 'dashboard:promotion-list' %}">{% trans "Content block management" %}</a>    	  	
         <span class="divider">/</span>    	  	
     </li>    	  	
     <li class="active">{% trans "Remove promotion from page?" %}</li>    	  	
@@ -33,7 +33,7 @@ create-page
     
 	<div class="form-actions">
 		<button type="submit" class="btn btn-danger">{% trans "Remove" %}</button>
-		{% trans "or" %} <a href="{% url dashboard:promotion-list-by-url object.page_url  %}">{% trans "cancel" %}</a>
+		{% trans "or" %} <a href="{% url 'dashboard:promotion-list-by-url' object.page_url  %}">{% trans "cancel" %}</a>
 	</div>
 </form>
 {% endblock %}

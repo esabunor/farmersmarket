@@ -24,7 +24,7 @@ class GrowerView(TemplateView):
     template_name = "growers.html"
 
     def get_context_data(self, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
+        context = super(GrowerView, self).get_context_data(**kwargs)
         context['partners'] = Partner.objects.all()
         context['user_less'] = False
         return context

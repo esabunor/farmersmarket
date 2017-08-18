@@ -1,6 +1,10 @@
 {% load i18n %}
-<form method="get" action="{% url search:search %}" class="navbar-form pull-right">
+<form method="get" action="{% url 'search:search' %}" >
+    <div class="input-field">
     {# {{ search_form.q.label_tag }} #}
     {{ search_form.q }}
-	<input type="submit" value="{% trans "Search" %}" class="btn" />
+    <input id="search" type="search" required>
+    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+    <i class="material-icons">close</i>
+    </div>
 </form>

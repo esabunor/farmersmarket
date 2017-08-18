@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'compressor',
     'widget_tweaks',
     'customtemplatetags.apps.CustomtemplatetagsConfig'
-] + get_core_apps(['catalogue', 'promotions', 'partner'])
+] + get_core_apps([ 'promotions', 'partner'])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,7 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
+                'farmermarket.context_processor.static_vars',
                 'oscar.apps.search.context_processors.search_form',
                 'oscar.apps.promotions.context_processors.promotions',
                 'oscar.apps.checkout.context_processors.checkout',

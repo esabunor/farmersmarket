@@ -1,0 +1,87 @@
+{% extends "layout_2_col.html" %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+{% load category_tags %}
+{% load extra_tags %}
+{% load i18n %}
+{% load static %}
+{% block extrahead %}
+{% endblock %}
+{% block mainstylesheet %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+{% endblock %}
+{% block mini_basket %}
+{% endblock %}
+{% block navigation %}
+<nav>
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">FarmersMarket</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="{% url 'promotions:home' %}">Home</a></li>
+                <li><a href="{% url 'growersview' %}">Growers</a></li>
+                <!-- Dropdown Trigger -->
+                <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Categories<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Basket<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="{% url 'promotions:home' %}">Home</a></li>
+                <li><a href="{% url 'growersview' %}">Growers</a></li>
+                <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Categories<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Basket<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+        </div>
+</nav>
+            <ul id="dropdown1" class="dropdown-content">
+            {% for category in categories %}
+                <li><a tabindex="-1" href="{{ category.0.get_absolute_url }}">{{ category.0.name }} {% if category.1 %}{% endif %}</a></li>
+            {% endfor %}
+            <!-- dropdown content for Basket -->
+            {% include "basket/partials/basket_quick.html" %}
+            </ul>
+{% endblock %}
+
+                    
+{% block content %}
+<!-- designed with materialize -->
+    <div class="container">
+    {% for category in products_categories %}
+        <div class="row">
+            <span id="category">{{ productcategory.category.name }}</span>
+            {% for productcategory in category %}
+                {%  purchase_info_for_product request productcategory.product as session %}
+                <div class="col s12 m3 l4">
+                    <div class="card small" href="{{ productcategory.product.get_absolute_url }}">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="media/{{ productcategory.product| toimage }}">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4">{{ productcategory.product }}<i class="material-icons right">more_vert</i></span>
+                            <p><a href="#">This is a link</a></p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">{{ productcategory.product }}<i class="material-icons right">close</i></span>
+                            <p><h4>{{ productcategory.product }}<span>{% if session.price.is_tax_known %}
+                                    Price is {{ session.price.incl_tax|currency:session.price.currency }}
+                                {% else %}
+                                    Price is {{ session.price.excl_tax|currency:session.price.currency }} +
+                                    tax
+                                {% endif %}</span></h4></p>
+                                <p>{{ productcategory.product.description |slice:":150"}}...</p>
+                        </div>
+                    </div> <!-- end of card -->
+                </div>
+            {% endfor %}
+        <div>
+    {% endfor %}
+    </div>   <!-- end of container -->
+{% endblock content %}
+{% block extrascripts %}
+<<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+<script>
+    $(".button-collapse").sideNav();
+</script>
+{% endblock %}
