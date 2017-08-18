@@ -13,6 +13,7 @@ class ProfileView(TemplateView):
         context['categories'] = Category.objects.all()
         partnername = kwargs['partnername']
         context['partners'] = Partner.objects.all()
+        context['user_less'] = False
         context['partner_details'] = Partner.objects.filter(name__iexact=partnername)
         return context
 
@@ -25,4 +26,5 @@ class GrowerView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['partners'] = Partner.objects.all()
+        context['user_less'] = False
         return context

@@ -14,4 +14,5 @@ class HomeView(CoreHomeView):
         poultry = ProductCategory.objects.filter(category__name__iexact='poultry')
         meat = ProductCategory.objects.filter(category__name__iexact='meat')
         context['products_categories'] = [fish, seafood, poultry, meat]
+        context['user_less'] = False
         return context 
