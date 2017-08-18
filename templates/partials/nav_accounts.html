@@ -1,0 +1,26 @@
+{% load i18n %}
+<div class="fixed-action-btn toolbar">
+	<a class="btn-floating btn-large red">
+		<i class="large material-icons">menu</i>
+	</a>
+	<ul>
+	{% if user.is_authenticated %}
+		<li class="waves-effect waves-light">
+			<a href="{% url 'customer:summary' %}"><i class="material-icons">person</i> {% trans "Account" %}</a>
+		</li>
+		<li class="waves-effect waves-light">
+			<a href="{% url 'customer:notifications-inbox' %}">
+				<i class="material-icons">notifications</i> {% trans "Notifications" %}
+				{% if num_unread_notifications > 0 %}
+					<span class="badge">{{ num_unread_notifications }}</span>
+				{% endif %}</a>
+		</li>
+		{% if user.is_staff %}
+			<li class="waves-effect waves-light" ><a href="{% url 'dashboard:index' %}"><i class="material-icons">reorder</i> {% trans "Dashboard" %}</a></li>
+		{% endif %}
+		<li class="waves-effect waves-light" ><a href="{% url 'customer:logout' %}"><i class="material-icons">person_outline</i> {% trans "Logout" %}</a></li>
+	{% else %}
+		<li class="waves-effect waves-light" ><a href="{% url 'customer:login' %}"><i class="material-icons">person_add</i> {% trans "Login or register" %}</a></li>
+	{% endif %}
+	</ul>
+</div>
