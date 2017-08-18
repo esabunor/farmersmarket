@@ -1,5 +1,5 @@
 from oscar.apps.promotions.views import HomeView as CoreHomeView
-from oscar.apps.catalogue.models import ProductCategory
+from oscar.apps.catalogue.models import ProductCategory, Category
 class HomeView(CoreHomeView):
     template_name = "home.html"
     
@@ -9,10 +9,10 @@ class HomeView(CoreHomeView):
     """
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        fish = ProductCategory.objects.filter(category__name__iexact='fish')
-        seafood = ProductCategory.objects.filter(category__name__iexact='seafood')
-        poultry = ProductCategory.objects.filter(category__name__iexact='poultry')
-        meat = ProductCategory.objects.filter(category__name__iexact='meat')
-        context['products_categories'] = [fish, seafood, poultry, meat]
+        productcategory = ProductCategory.objects.all()
+        context['products_categories'] = productcategory
+        context['customfooter'] = True
+        context['customnavaccount'] = True
+        context['categories'] = Category.objects.all()
         context['user_less'] = False
         return context 

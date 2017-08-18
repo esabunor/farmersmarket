@@ -1,6 +1,5 @@
-{% extends "base.html" %}
-
-{% load currency_filters %}
+{% extends "layout.html" %}
+{% load i18n %}
 {% load promotion_tags %}
 {% load category_tags %}
 
@@ -8,20 +7,21 @@
 
     <header class="header container-fluid">
         <div class="page_inner">
-            <div class="row-fluid">
+            <div class="row">
                 {% include "partials/brand.html" %}
-            </div><!-- /row-fluid -->
+            </div><!-- /row -->
         </div>
-        {% include "partials/nav_checkout.html" %}
+        {% block checkout_nav %}{% endblock %}
     </header><!-- /header -->
 
     <div class="container-fluid page">
-        {% include 'partials/alert_messages.html' %}
-        {% block header %}{% endblock %}
-
        <div class="page_inner">
-            {% block checkout-nav %}
-            {% endblock %}
+            {% include 'partials/alert_messages.html' %}
+
+            <div class="sub-header">
+                <h1>{% block checkout_title %}{% endblock %}</h1>
+            </div>
+
             <!-- The main nav on checkout pages contain links to modal flatpages -->
             {% block modal %}
                 {% load flatpages %}

@@ -1,0 +1,22 @@
+{% extends "home.html" %}
+{% block content_wrapper %}
+{% for partner in partners %}
+<div class="col s12">
+    <h5 class="header card-panel">{{ partner.name }}</h5>
+    <div class="card horizontal">
+        <div class="card-image">
+        <img src="https://lorempixel.com/100/190/nature/6">
+        </div>
+        <div class="card-stacked">
+        <div class="card-content">
+            <p>{{ partner.addresses.0 }}</p>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'growersprofileview' partner.name %}">Visit page</a>
+        </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% include "footer.html" %}              
+{% endblock %}

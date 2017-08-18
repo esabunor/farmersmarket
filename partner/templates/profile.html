@@ -1,73 +1,22 @@
-{% extends 'base.html' %}
-{% load currency_filters %}
-{% load category_tags %}
-{% load i18n %}
-
-{% block mainstylesheet %}
-<link rel="stylesheet" href="{{ STATIC_URL }}oscar/css/materialize.min.css" />
-{% endblock %}
-<div class="navbar-header pull-right">
-        
-        <a class="btn btn-default navbar-toggle collapsed" data-toggle="collapse" data-target=".primary-collapse">
-            <span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </span>
-        </a>
-    </div>
-
-    <a class="btn btn-default navbar-btn btn-cart navbar-right visible-xs-inline-block" href="/basket/">
-        <i class="icon-shopping-cart"></i>
-        Cart
-        
-    </a>
-<div class="navbar primary navbar-static-top navbar-inverse">
-    <div class="navbar-inner">
-        <div class="navbar-collapse primary-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="dropdown active ">
-                    <a href="#" class="dropdown-toggle"  data-toggle="dropdown">
-                        {% trans "Categories" %}
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a tabindex="-1" href="{% url 'catalogue:index' %}">{% trans "All Products" %}</a></li>
-                        <li class="divider"></li>
-                        {% for category in categories %}
-                        <li><a tabindex="-1" href="{{ category.get_absolute_url }}">{{ category }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            <ul>
-        </div><!-- /.nav-collapse -->
-        {% include "partials/search.html" %}
-    </div><!-- /navbar-inner -->
-</div><!-- /navbar -->
-{% block content %}
-<!-- contains the main page content -->
-{% block navigation %}
-<nav>
-    <div class="nav-wrapper">
-        <a href="#!" class="brand-logo">Logo</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
-        </ul>
-        <ul class="side-nav" id="mobile-demo">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
-        </ul>
-    </div>
-</nav>
-{% endblock %}
-{% for partnerdetail in partnerdetails %}
-<!-- list view of all partners -->
-
+{% extends "home.html" %}
+{% load extra_tags %}
+{% block content_wrapper %}
+<div class="card-panel"><h5 class=""><span class="red-text text-accent-1">{{ partner_details.name }}</span></h5></div>
+<div class="card-panel red accent-1"><span class="white-text">Addresses</span></div>
+{% for address in addresses %}
+<div class="card-panel">
+    <p >{{ address }}</p>
+</div>
 {% endfor %}
-{% endblock %}<!-- block content -->
+<div class="card-panel red accent-1"><span class="white-text">Stock Records</span></div>
+<ul class="collection">
+{% for stockrecord in stockrecords %}
+<li class="collection-item avatar">
+    <img src="/media/{{ stockrecord.product | toimage }}" alt="" class="circle">
+    <span class="title">{{ stockrecord.product.title }}</span>
+    <p>{{ stockrecord.product.description }} </p>
+    <a href="{{ stockrecord.product.get_absolute_url }}" class="secondary-content"><i class="material-icons">send</i></a>
+</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,13 +1,14 @@
-{% extends "layout_2_col.html" %}
+{% extends "layout.html" %}
 {% load currency_filters %}
 {% load purchase_info_tags %}
 {% load category_tags %}
 {% load extra_tags %}
+{% load basket_tags %}
 {% load i18n %}
 {% load static %}
 {% block extrahead %}
 {% endblock %}
-{% block mainstylesheet %}
+{% block styles %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
@@ -25,59 +26,76 @@
                 <!-- Dropdown Trigger -->
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Categories<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Basket<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="btn" href="/checkout/">Checkout</a></li>
             </ul>
             <ul class="side-nav" id="mobile-demo">
                 <li><a href="{% url 'promotions:home' %}">Home</a></li>
                 <li><a href="{% url 'growersview' %}">Growers</a></li>
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Categories<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Basket<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="btn" href="/checkout/">Checkout</a></li>
+                <li><a href="{% url 'basket:summary' %}" class="btn">{% trans "View Basket" %}</a></li>
             </ul>
         </div>
 </nav>
             <ul id="dropdown1" class="dropdown-content">
+                <li><a tabindex="-1" href="/catalogue/">All Products</a></li>
             {% for category in categories %}
-                <li><a tabindex="-1" href="{{ category.0.get_absolute_url }}">{{ category.0.name }} {% if category.1 %}{% endif %}</a></li>
-            {% endfor %}
-            <!-- dropdown content for Basket -->
-            {% include "basket/partials/basket_quick.html" %}
+                <li><a tabindex="-1" href="{{ category.get_absolute_url }}">{{ category.name }} {% if category.1 %}{% endif %}</a></li>
+            {% endfor %} 
             </ul>
+            <!-- dropdown content for Basket -->
+            {% include "basket_quick.html" %}
+           
 {% endblock %}
 
                     
-{% block content %}
+{% block content_wrapper %}
 <!-- designed with materialize -->
-    <div class="container">
-    {% for category in products_categories %}
+    {% for product_category in products_categories %}
+        <div class="white card-panel"><span class="title red-text text-accent-1">{{ product_category.category.name }}</span></div>
         <div class="row">
-            <span id="category">{{ productcategory.category.name }}</span>
-            {% for productcategory in category %}
-                {%  purchase_info_for_product request productcategory.product as session %}
+                {%  purchase_info_for_product request product_category.product as session %}
+                
                 <div class="col s12 m3 l4">
-                    <div class="card small" href="{{ productcategory.product.get_absolute_url }}">
+                    <div class="card small" href="{{ product_category.product.get_absolute_url }}">
                         <div class="card-image waves-effect waves-block waves-light">
-                            <img class="activator" src="media/{{ productcategory.product| toimage }}">
+                            <img class="activator" src="media/{{ product_category.product| toimage }}">
                         </div>
                         <div class="card-content">
-                            <span class="card-title activator grey-text text-darken-4">{{ productcategory.product }}<i class="material-icons right">more_vert</i></span>
-                            <p><a href="#">This is a link</a></p>
+                            <span class="card-title activator grey-text text-darken-4">{{ product_category.product }}   <span>{% if session.price.is_tax_known %}
+                                    {{ session.price.incl_tax|currency:session.price.currency }}
+                                {% else %}
+                                    {{ session.price.excl_tax|currency:session.price.currency }} +
+                                    tax
+                                {% endif %}</span><i class="material-icons right">more_vert</i></span>
+                            <p>{% if session.availability.is_available_to_buy %}
+                                    {% basket_form request product_category.product 'single' as basket_form %}
+                                    <form action="{% url 'basket:add' pk=product_category.product.pk %}" method="post">
+                                        {% csrf_token %}
+                                        {{ basket_form.as_p }}
+                                        <button type="submit" class="btn btn-primary btn-block" data-loading-text="{% trans 'Adding...' %}">{% trans "Add to basket" %}</button>
+                                    </form>
+                                {% else %}
+                                    <span class="btn btn-default btn-block disabled">{% trans "Add to basket" %}</span>
+                                {% endif %}</p>
                         </div>
                         <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">{{ productcategory.product }}<i class="material-icons right">close</i></span>
-                            <p><h4>{{ productcategory.product }}<span>{% if session.price.is_tax_known %}
-                                    Price is {{ session.price.incl_tax|currency:session.price.currency }}
+                            <span class="card-title grey-text text-darken-4">{{ product_category.product }}<i class="material-icons right">close</i></span>
+                            <p><span>{% if session.price.is_tax_known %}
+                                    Price: {{ session.price.incl_tax|currency:session.price.currency }}
                                 {% else %}
-                                    Price is {{ session.price.excl_tax|currency:session.price.currency }} +
+                                    Price: {{ session.price.excl_tax|currency:session.price.currency }} +
                                     tax
-                                {% endif %}</span></h4></p>
-                                <p>{{ productcategory.product.description |slice:":150"}}...</p>
+                                {% endif %}</span></p>
+                                <p>{{ product_category.product.description |slice:":150"}}...</p>
                         </div>
                     </div> <!-- end of card -->
                 </div>
-            {% endfor %}
         <div>
     {% endfor %}
-    </div>   <!-- end of container -->
-{% endblock content %}
+    {% include "footer.html" %}
+{% endblock %}
 {% block extrascripts %}
 <<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>

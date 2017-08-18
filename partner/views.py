@@ -14,7 +14,12 @@ class ProfileView(TemplateView):
         partnername = kwargs['partnername']
         context['partners'] = Partner.objects.all()
         context['user_less'] = False
-        context['partner_details'] = Partner.objects.filter(name__iexact=partnername)
+        partner = Partner.objects.filter(name__iexact=partnername)[0]
+        context['partner_details'] = partner
+        context['stockrecords'] = partner.stockrecords.all()
+        context['addresses'] = partner.addresses.all()
+        context['customfooter'] = True
+        context['customnavaccount'] = True
         return context
 
 """this view is like a list view for displaying all growers
@@ -27,4 +32,6 @@ class GrowerView(TemplateView):
         context = super(GrowerView, self).get_context_data(**kwargs)
         context['partners'] = Partner.objects.all()
         context['user_less'] = False
+        context['customfooter'] = True
+        context['customnavaccount'] = True
         return context

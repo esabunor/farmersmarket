@@ -1,0 +1,31 @@
+{% load currency_filters %}
+{% load history_tags %}
+{% load basket_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{# edited to support materializecss #}
+<!-- Dropdown Structure -->
+<ul id="dropdown2" class="dropdown-content">
+    <ul class="collection">
+        {% if request.basket.num_lines %}
+            {% for line in request.basket.all_lines %}
+            <li class="collection-item avatar">
+                        {% with image=line.product.primary_image %}
+                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                            <a href="{{ form.instance.product.get_absolute_url }}"><img class="circle" src="{{ thumb.url }}" alt="{{ product.get_title }}"></a>
+                            {% endthumbnail %}
+                        {% endwith %}
+                    <p class="title">{{ line.unit_price_excl_tax|currency }}</p>
+                    <a class="secondary-content"><strong>{% trans "Qty" %}</strong> {{ line.quantity }}</a>
+                    
+            </li>
+            {% endfor %}
+            <li class="form-actions">
+                <small>{% trans "Total Excl Tax:" %} {{ request.basket.total_excl_tax|currency }}</small> <br/><small>{% trans "Total:" %} {{ basket.total_incl_tax|currency }}</small>
+            </li>
+        {% else %}
+            <li><p>{% trans "Your basket is empty." %}</p></li>
+        {% endif %}
+    </ul>
+</ul>
+
