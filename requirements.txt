@@ -37,3 +37,4 @@ Scrapy==1.4.0
 unicodecsv==0.14.1
 Unidecode==0.4.21
 uritemplate==3.0.0
+whitenoise==3.3.0
