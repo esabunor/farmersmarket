@@ -1,0 +1,4 @@
+.py[cod]
+.vscode
+farmermarket/settings/local.py
+farmermarket/settings/base.py
