@@ -52,9 +52,12 @@
                     
 {% block content_wrapper %}
 <!-- designed with materialize -->
+{% for products_categories in all_products_categories %}
     {% for product_category in products_categories %}
+       {% if forloop.counter == 1 %}
         <div class="white card-panel"><span class="title red-text text-accent-1">{{ product_category.category.name }}</span></div>
         <div class="row">
+        {% endif %}
                 {%  purchase_info_for_product request product_category.product as session %}
                 
                 <div class="col s12 m3 l4">
@@ -94,6 +97,7 @@
                 </div>
         <div>
     {% endfor %}
+{% endfor %}
     {% include "footer.html" %}
 {% endblock %}
 {% block extrascripts %}

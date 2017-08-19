@@ -9,10 +9,9 @@ class HomeView(CoreHomeView):
     """
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        productcategory = ProductCategory.objects.all()
-        context['products_categories'] = productcategory
+        meatproductcategory = ProductCategory.objects.filter(category__name__iexact="meat")
+        context['all_products_categories'] = (meatproductcategory,)
         context['customfooter'] = True
         context['customnavaccount'] = True
-        context['categories'] = Category.objects.all()
         context['user_less'] = False
         return context 
